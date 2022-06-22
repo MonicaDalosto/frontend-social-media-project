@@ -3,7 +3,7 @@ import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
 import { HeroBanner, Loading, MessageBox, Navigation } from './components';
-import { SignUp, Login, Spaces } from './pages';
+import { SignUp, Login, Spaces, Stories } from './pages';
 // import Navigation from './components/Navigation';
 // import Loading from './components/Loading';
 // import HeroBanner from './components/HeroBanner';
@@ -45,6 +45,7 @@ function App() {
         <Route path="/other" element={<Other />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/stories/:id" element={<Stories />} />
       </Routes>
     </div>
   );
