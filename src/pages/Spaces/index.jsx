@@ -23,13 +23,16 @@ const Spaces = () => {
       {!allSpaces
         ? 'Loading...'
         : allSpaces.map(space => (
-            //
             <div
               key={space.id}
               style={{
                 backgroundColor: space.backgroundColor,
                 color: space.color,
-                width: '500px'
+                width: '500px',
+                borderRadius: '8px',
+                margin: '20px auto',
+                padding: '20px',
+                textAlign: 'center'
               }}
             >
               <h2>{space.title}</h2> <p>{space.description}</p>
