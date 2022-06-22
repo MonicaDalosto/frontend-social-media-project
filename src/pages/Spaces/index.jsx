@@ -13,7 +13,7 @@ const Spaces = () => {
   useEffect(() => {
     // console.log('Hello from the Spaces page');
     dispatch(getAllSpaces());
-  }, []);
+  }, []); // Check if I need to monitor the allSpaces
 
   return (
     <div>
@@ -36,7 +36,7 @@ const Spaces = () => {
               }}
             >
               <h2>{space.title}</h2> <p>{space.description}</p>
-              <NavLink to={`/stories/${space.id}`}>
+              <NavLink to={`/spacedetails/${space.id}`}>
                 <button>Visit space</button>
               </NavLink>
             </div>
