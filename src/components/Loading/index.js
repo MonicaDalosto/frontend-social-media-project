@@ -1,8 +1,8 @@
-import React from "react";
-import Spinner from "react-bootstrap/Spinner";
-import "./spinner.css";
+import React from 'react';
+import Spinner from 'react-bootstrap/Spinner';
+import './spinner.css';
 
-export default function Loading() {
+const Loading = () => {
   return (
     <div className="loading_spinner">
       <Spinner animation="border" role="status">
@@ -10,4 +10,6 @@ export default function Loading() {
       </Spinner>
     </div>
   );
-}
+};
+
+export { Loading };
