@@ -23,8 +23,15 @@ const Spaces = () => {
       {!allSpaces
         ? 'Loading...'
         : allSpaces.map(space => (
-            // style={{backgroundColor: {space.backgroundColor}, color: {space.color}}}
-            <div key={space.id}>
+            //
+            <div
+              key={space.id}
+              style={{
+                backgroundColor: space.backgroundColor,
+                color: space.color,
+                width: '500px'
+              }}
+            >
               <h2>{space.title}</h2> <p>{space.description}</p>
               <NavLink to={`/stories/${space.id}`}>
                 <button>Visit space</button>
