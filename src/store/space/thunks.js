@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAllSpaces, setAllStories } from './slice';
+import { setAllSpaces, setSpaceDetails, setAllStories } from './slice';
 
 const API_URL = 'http://localhost:4000';
 
@@ -7,7 +7,6 @@ const API_URL = 'http://localhost:4000';
 export const getAllSpaces = () => async (dispatch, getState) => {
   try {
     const response = await axios.get(`${API_URL}/spaces`);
-    // console.log(response.data);
 
     dispatch(setAllSpaces(response.data));
   } catch (error) {
@@ -15,13 +14,12 @@ export const getAllSpaces = () => async (dispatch, getState) => {
   }
 };
 
-// Feature 2 - The function to get the specific space with the stories from the Api:
+// Feature 2 - The function to get the specific space with the stories from the Api, the spaceId is being past on the SpaceDetails page:
 export const getSpecificSpace = spaceId => async (dispatch, getState) => {
   try {
     const response = await axios.get(`${API_URL}/spaces/details/${spaceId}`);
-    console.log('Data from getSpecificSpace thunk: ', response.data);
 
-    // dispatch(setAllSpaces(response.data));
+    dispatch(setSpaceDetails(response.data));
   } catch (error) {
     console.log('error from getSpecificSpace thunk: ', error.message);
   }

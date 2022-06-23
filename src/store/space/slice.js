@@ -13,12 +13,16 @@ export const spaceSlice = createSlice({
     setAllSpaces: (state, action) => {
       state.allSpaces = action.payload;
     },
+    setSpaceDetails: (state, action) => {
+      state.spaceDetails = action.payload;
+    },
     setAllStories: (state, action) => {
       state.allStories = action.payload;
     }
   }
 });
 
-export const { setAllSpaces, setAllStories } = spaceSlice.actions;
+export const { setAllSpaces, setSpaceDetails, setAllStories } =
+  spaceSlice.actions;
 
 export default spaceSlice.reducer;
