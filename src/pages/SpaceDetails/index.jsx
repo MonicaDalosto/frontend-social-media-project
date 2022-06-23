@@ -17,33 +17,41 @@ const SpaceDetails = () => {
     dispatch(getSpecificSpace(id));
   }, [dispatch, id]);
 
+  if (!specificSpace)
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    );
+
+  const storiesSorted = [...specificSpace.stories].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   return (
     <div>
       <HeroBanner>
         <h1>Space Details</h1>
       </HeroBanner>
-      {!specificSpace ? (
-        'Loading...'
-      ) : (
-        <div
-          style={{
-            backgroundColor: specificSpace.backgroundColor,
-            color: specificSpace.color
-          }}
-        >
-          <h2>{specificSpace.title} </h2>
-          <p>{specificSpace.description}</p>
-          <div>
-            {specificSpace.stories.map(story => (
-              <div>
-                <h3>{story.name}</h3>
-                <p>{story.content}</p>
-                <img src={story.imageUrl} alt="" />
-              </div>
-            ))}
-          </div>
+
+      <div
+        style={{
+          backgroundColor: specificSpace.backgroundColor,
+          color: specificSpace.color
+        }}
+      >
+        <h2>{specificSpace.title} </h2>
+        <p>{specificSpace.description}</p>
+        <div>
+          {storiesSorted.map(story => (
+            <div key={story.id}>
+              <h3>{story.name}</h3>
+              <p>{story.content}</p>
+              <img src={story.imageUrl} alt="" />
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };

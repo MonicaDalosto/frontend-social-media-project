@@ -11,34 +11,39 @@ const Spaces = () => {
 
   useEffect(() => {
     dispatch(getAllSpaces());
-  }, [dispatch]);
+  }, [dispatch, allSpaces]);
+
+  if (!allSpaces)
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    );
 
   return (
     <div>
       <HeroBanner>
         <h1>Spaces</h1>
       </HeroBanner>
-      {!allSpaces
-        ? 'Loading...'
-        : allSpaces.map(space => (
-            <div
-              key={space.id}
-              style={{
-                backgroundColor: space.backgroundColor,
-                color: space.color,
-                width: '500px',
-                borderRadius: '8px',
-                margin: '20px auto',
-                padding: '20px',
-                textAlign: 'center'
-              }}
-            >
-              <h2>{space.title}</h2> <p>{space.description}</p>
-              <NavLink to={`/spacedetails/${space.id}`}>
-                <button>Visit space</button>
-              </NavLink>
-            </div>
-          ))}
+      {allSpaces.map(space => (
+        <div
+          key={space.id}
+          style={{
+            backgroundColor: space.backgroundColor,
+            color: space.color,
+            width: '500px',
+            borderRadius: '8px',
+            margin: '20px auto',
+            padding: '20px',
+            textAlign: 'center'
+          }}
+        >
+          <h2>{space.title}</h2> <p>{space.description}</p>
+          <NavLink to={`/spaces/${space.id}`}>
+            <button>Visit space</button>
+          </NavLink>
+        </div>
+      ))}
     </div>
   );
 };

@@ -18,6 +18,16 @@ export const getAllSpaces = () => async (dispatch, getState) => {
 export const getSpecificSpace = spaceId => async (dispatch, getState) => {
   try {
     const response = await axios.get(`${API_URL}/spaces/details/${spaceId}`);
+    console.log('specificSpace: ', response.data);
+
+    // *** Important: If you want to sort the stories inside the thunk, you need pay attention when add new stories, because the stories will be sorted before...
+    // const storiesSorted = [...response.data.stories].sort(
+    //   (a, b) => b.createdAt - a.createdAt
+    // );
+    // const updatedSpace = {
+    //   ...response.data,
+    //   stories: storiesSorted
+    // };
 
     dispatch(setSpaceDetails(response.data));
   } catch (error) {
