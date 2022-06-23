@@ -1,14 +1,14 @@
 import { HeroBanner } from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAllSpaces } from '../../store/space/selectors';
+import { selectSpecificSpace } from '../../store/space/selectors';
 import { useParams } from 'react-router-dom';
 import { getSpecificSpace } from '../../store/space/thunks';
 // import { NavLink } from 'react-router-dom';
 
 const SpaceDetails = () => {
   const dispatch = useDispatch();
-  const allSpaces = useSelector(selectAllSpaces);
+  const specificSpace = useSelector(selectSpecificSpace);
   const params = useParams();
   const { id } = params;
 
@@ -22,7 +22,28 @@ const SpaceDetails = () => {
       <HeroBanner>
         <h1>Space Details</h1>
       </HeroBanner>
-      {!allSpaces ? 'Loading...' : allSpaces}
+      {!specificSpace ? (
+        'Loading...'
+      ) : (
+        <div
+          style={{
+            backgroundColor: specificSpace.backgroundColor,
+            color: specificSpace.color
+          }}
+        >
+          <h2>{specificSpace.title} </h2>
+          <p>{specificSpace.description}</p>
+          <div>
+            {specificSpace.stories.map(story => (
+              <div>
+                <h3>{story.name}</h3>
+                <p>{story.content}</p>
+                <img src={story.imageUrl} alt="" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

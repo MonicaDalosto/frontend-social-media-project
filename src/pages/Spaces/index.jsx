@@ -8,12 +8,10 @@ import { NavLink } from 'react-router-dom';
 const Spaces = () => {
   const dispatch = useDispatch();
   const allSpaces = useSelector(selectAllSpaces);
-  console.log(allSpaces);
 
   useEffect(() => {
-    // console.log('Hello from the Spaces page');
     dispatch(getAllSpaces());
-  }, []); // Check if I need to monitor the allSpaces
+  }, [dispatch]);
 
   return (
     <div>
