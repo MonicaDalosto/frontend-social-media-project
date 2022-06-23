@@ -25,7 +25,7 @@ const SignUp = () => {
   function submitForm(event) {
     event.preventDefault();
 
-    dispatch(signUp(name, email, password));
+    dispatch(signUp(name, email, password, navigate));
 
     setEmail('');
     setPassword('');

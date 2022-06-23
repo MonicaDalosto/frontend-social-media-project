@@ -3,7 +3,7 @@ import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
 import { HeroBanner, Loading, MessageBox, Navigation } from './components';
-import { SignUp, Login, Spaces, SpaceDetails } from './pages';
+import { SignUp, Login, Spaces, SpaceDetails, MySpace } from './pages';
 // import Navigation from './components/Navigation';
 // import Loading from './components/Loading';
 // import HeroBanner from './components/HeroBanner';
@@ -21,11 +21,11 @@ import { getUserWithStoredToken } from './store/user/actions';
 //     <h1>Home</h1>
 //   </HeroBanner>
 // );
-const Other = () => (
-  <HeroBanner>
-    <h1>Other</h1>
-  </HeroBanner>
-);
+// const Other = () => (
+//   <HeroBanner>
+//     <h1>Other</h1>
+//   </HeroBanner>
+// );
 
 function App() {
   const dispatch = useDispatch();
@@ -42,7 +42,8 @@ function App() {
       {isLoading ? <Loading /> : null}
       <Routes>
         <Route exact path="/" element={<Spaces />} />
-        <Route path="/other" element={<Other />} />
+        {/* <Route path="/other" element={<Other />} /> */}
+        <Route path="/myspace" element={<MySpace />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/spaces/:id" element={<SpaceDetails />} />

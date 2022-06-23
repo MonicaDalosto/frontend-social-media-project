@@ -22,7 +22,7 @@ const Navigation = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav style={{ width: '100%' }} fill>
           <NavbarItem path="/" linkText="Spaces" />
-          <NavbarItem path="/other" linkText="My space" />
+          <NavbarItem path="/myspace" linkText="My space" />
           {loginLogoutControls}
         </Nav>
       </Navbar.Collapse>
