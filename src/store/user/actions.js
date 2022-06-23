@@ -4,6 +4,7 @@ import { selectToken } from './selectors';
 import { appLoading, appDoneLoading, setMessage } from '../appState/slice';
 import { showMessageWithTimeout } from '../appState/actions';
 import { loginSuccess, logOut, tokenStillValid } from './slice';
+import { setMySpace } from '../space/slice';
 
 export const signUp = (name, email, password, navigate) => {
   return async (dispatch, getState) => {
@@ -21,11 +22,8 @@ export const signUp = (name, email, password, navigate) => {
       dispatch(showMessageWithTimeout('success', true, 'account created'));
       dispatch(appDoneLoading());
 
-      // Post the request to create the new space:
+      // Feature 3: Post the request to create the new space, and navigate the user to his space:
       const { id } = response.data.user;
-
-      console.log('id: ', id);
-      console.log('response from the signup: ', response.data.user);
 
       const newSpaceResponse = await axios.post(`${apiUrl}/spaces`, {
         name,
@@ -33,6 +31,8 @@ export const signUp = (name, email, password, navigate) => {
       });
 
       console.log('newSpaceResponse: ', newSpaceResponse);
+
+      dispatch(setMySpace(newSpaceResponse.data));
       navigate(`/myspace/${id}`);
     } catch (error) {
       if (error.response) {
@@ -71,6 +71,9 @@ export const login = (email, password) => {
       dispatch(
         loginSuccess({ token: response.data.token, user: response.data.user })
       );
+      //  When the user login, send the mySpace value to the reducer slice to set on the state:
+      // console.log('response.data.user login: ', response.data.user);
+      dispatch(setMySpace(response.data.user.mySpace));
       dispatch(showMessageWithTimeout('success', false, 'welcome back!', 1500));
       dispatch(appDoneLoading());
     } catch (error) {
@@ -114,8 +117,10 @@ export const getUserWithStoredToken = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
+      // console.log('user data from inside the me thunks: ', response.data);
       // token is still valid
       dispatch(tokenStillValid({ user: response.data }));
+      dispatch(setMySpace(response.data.mySpace));
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {

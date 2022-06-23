@@ -11,7 +11,7 @@ const Spaces = () => {
 
   useEffect(() => {
     dispatch(getAllSpaces());
-  }, [dispatch, allSpaces]);
+  }, [dispatch]);
 
   if (!allSpaces)
     return (

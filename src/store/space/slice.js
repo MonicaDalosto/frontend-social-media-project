@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   allSpaces: null,
   spaceDetails: null,
+  mySpace: null,
   allStories: null
 };
 
@@ -16,13 +17,16 @@ export const spaceSlice = createSlice({
     setSpaceDetails: (state, action) => {
       state.spaceDetails = action.payload;
     },
+    setMySpace: (state, action) => {
+      state.mySpace = action.payload;
+    },
     setAllStories: (state, action) => {
       state.allStories = action.payload;
     }
   }
 });
 
-export const { setAllSpaces, setSpaceDetails, setAllStories } =
+export const { setAllSpaces, setSpaceDetails, setMySpace, setAllStories } =
   spaceSlice.actions;
 
 export default spaceSlice.reducer;

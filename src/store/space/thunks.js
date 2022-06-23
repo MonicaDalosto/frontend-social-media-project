@@ -45,3 +45,13 @@ export const getAllStories = () => async (dispatch, getState) => {
     console.log('error from getAllSpaces thunk: ', error.message);
   }
 };
+
+// The function to get all stories from the Api:
+export const deleteStory = id => async (dispatch, getState) => {
+  try {
+    const response = await axios.delete(`${API_URL}/stories/${id}`);
+    console.log('response from delete thunk: ', response);
+  } catch (error) {
+    console.log('error from deleteStories thunk: ', error.message);
+  }
+};

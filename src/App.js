@@ -21,11 +21,11 @@ import { getUserWithStoredToken } from './store/user/actions';
 //     <h1>Home</h1>
 //   </HeroBanner>
 // );
-// const Other = () => (
-//   <HeroBanner>
-//     <h1>Other</h1>
-//   </HeroBanner>
-// );
+const Other = () => (
+  <HeroBanner>
+    <h1>Other</h1>
+  </HeroBanner>
+);
 
 function App() {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function App() {
       {isLoading ? <Loading /> : null}
       <Routes>
         <Route exact path="/" element={<Spaces />} />
-        {/* <Route path="/other" element={<Other />} /> */}
+        <Route path="/other" element={<Other />} />
         <Route path="/myspace/:userId" element={<MySpace />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
