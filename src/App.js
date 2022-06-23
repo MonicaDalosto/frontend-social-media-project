@@ -43,7 +43,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Spaces />} />
         {/* <Route path="/other" element={<Other />} /> */}
-        <Route path="/myspace" element={<MySpace />} />
+        <Route path="/myspace/:userId" element={<MySpace />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/spaces/:id" element={<SpaceDetails />} />

@@ -20,7 +20,20 @@ export const signUp = (name, email, password, navigate) => {
       );
       dispatch(showMessageWithTimeout('success', true, 'account created'));
       dispatch(appDoneLoading());
-      navigate('/myspace');
+
+      // Post the request to create the new space:
+      const { id } = response.data.user;
+
+      console.log('id: ', id);
+      console.log('response from the signup: ', response.data.user);
+
+      const newSpaceResponse = await axios.post(`${apiUrl}/spaces`, {
+        name,
+        id
+      });
+
+      console.log('newSpaceResponse: ', newSpaceResponse);
+      navigate(`/myspace/${id}`);
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
