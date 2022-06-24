@@ -1,22 +1,26 @@
-import { HeroBanner } from '../../components';
+import {
+  HeroBanner,
+  PostStory,
+  SpaceTitle,
+  StoryTitle
+} from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMySpace } from '../../store/space/selectors';
 import { deleteStory } from '../../store/space/thunks';
+import { selectToken } from '../../store/user/selectors';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+
 // import { NavLink } from 'react-router-dom';
 // import { selectUser } from '../../store/user/selectors';
-import { selectToken } from '../../store/user/selectors';
 
 const MySpace = () => {
-  const dispatch = useDispatch();
   // const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const mySpace = useSelector(selectMySpace);
   const token = useSelector(selectToken);
 
   useEffect(() => {}, [mySpace]);
-
-  // console.log('user inside the mySpace: ', user);
-  // console.log('mySpace inside the mySpace: ', mySpace);
 
   if (!mySpace)
     return (
@@ -25,49 +29,43 @@ const MySpace = () => {
       </div>
     );
 
+  const storiesSorted = [...mySpace.stories].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  // Destructuring the object "mySpace"
+  const { id, title, description, backgroundColor, color } = mySpace;
+
   return (
     <div>
       <HeroBanner>
         <h1>My Space</h1>
       </HeroBanner>
-      <div
-        style={{
-          backgroundColor: mySpace.backgroundColor,
-          color: mySpace.color,
-          textAlign: 'center'
-        }}
-      >
-        <h2>{mySpace.title}</h2>
-        <p>{mySpace.description}</p>
-      </div>
-      <div>
+      <SpaceTitle
+        key={id}
+        bgColor={backgroundColor}
+        color={color}
+        title={title}
+        description={description}
+      />
+
+      <div style={{ width: '400px', margin: '30px auto' }}>
         <button>Edit my space</button>
         <button>Post a cool story bro</button>
       </div>
-      {mySpace.stories.map(story => (
-        <div
-          key={story.id}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            maxWidth: '1000px',
-            margin: '30px auto',
-            padding: '20px'
-          }}
-        >
-          <img
-            src={story.imageUrl}
-            alt=""
-            style={{
-              maxWidth: '500px',
-              maxHeight: '400px',
-              marginRight: '30px'
-            }}
-          />
-          <div>
-            <h3>{story.name}</h3>
-            <p>{story.content}</p>
+
+      <PostStory />
+
+      {storiesSorted.map(story => {
+        const { id, name, content, imageUrl } = story;
+        return (
+          <div style={{ position: 'relative' }}>
+            <StoryTitle
+              key={id}
+              name={name}
+              content={content}
+              imageUrl={imageUrl}
+            />
             <button
               value={story.id}
               onClick={event =>
@@ -75,20 +73,15 @@ const MySpace = () => {
                   deleteStory(Number(event.target.value), mySpace.id, token)
                 )
               }
+              style={{ position: 'absolute', bottom: 0, right: 0 }}
             >
-              Delete story
+              <RiDeleteBin6Line />
             </button>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
 
 export { MySpace };
-
-// If I want to set the image as a background:
-// style={{
-//   backgroundImage: `url(${story.imageUrl})`,
-//   backgroundRepeat: 'no-repeat'
-// }}
