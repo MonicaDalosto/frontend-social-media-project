@@ -1,4 +1,4 @@
-import { HeroBanner } from '../../components';
+import { HeroBanner, SpaceTitle, StoryTitle } from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSpecificSpace } from '../../store/space/selectors';
@@ -10,12 +10,12 @@ const SpaceDetails = () => {
   const dispatch = useDispatch();
   const specificSpace = useSelector(selectSpecificSpace);
   const params = useParams();
-  const { id } = params;
+  const SpaceId = params.id;
 
   useEffect(() => {
     console.log('Hello from useEffect stories');
-    dispatch(getSpecificSpace(id));
-  }, [dispatch, id]);
+    dispatch(getSpecificSpace(SpaceId));
+  }, [dispatch, SpaceId]);
 
   if (!specificSpace)
     return (
@@ -28,30 +28,33 @@ const SpaceDetails = () => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
+  // Destructuring the object "specificSpace"
+  const { id, title, description, backgroundColor, color } = specificSpace;
+
   return (
     <div>
       <HeroBanner>
         <h1>Space Details</h1>
       </HeroBanner>
+      <SpaceTitle
+        key={id}
+        bgColor={backgroundColor}
+        color={color}
+        title={title}
+        description={description}
+      />
 
-      <div
-        style={{
-          backgroundColor: specificSpace.backgroundColor,
-          color: specificSpace.color
-        }}
-      >
-        <h2>{specificSpace.title} </h2>
-        <p>{specificSpace.description}</p>
-        <div>
-          {storiesSorted.map(story => (
-            <div key={story.id}>
-              <h3>{story.name}</h3>
-              <p>{story.content}</p>
-              <img src={story.imageUrl} alt="" />
-            </div>
-          ))}
-        </div>
-      </div>
+      {storiesSorted.map(story => {
+        const { id, name, content, imageUrl } = story;
+        return (
+          <StoryTitle
+            key={id}
+            name={name}
+            content={content}
+            imageUrl={imageUrl}
+          />
+        );
+      })}
     </div>
   );
 };
