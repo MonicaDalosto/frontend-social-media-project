@@ -10,15 +10,20 @@ import { selectMySpace } from '../../store/space/selectors';
 import { deleteStory } from '../../store/space/thunks';
 import { selectToken } from '../../store/user/selectors';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-
-// import { NavLink } from 'react-router-dom';
-// import { selectUser } from '../../store/user/selectors';
+import { useState } from 'react';
 
 const MySpace = () => {
   // const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const mySpace = useSelector(selectMySpace);
   const token = useSelector(selectToken);
+  const [buttonPost, setButtonPost] = useState(false);
+
+  const handleClickPost = () => {
+    setButtonPost(!buttonPost);
+  };
+
+  console.log('buttonPost outside the onclick: ', buttonPost);
 
   useEffect(() => {}, [mySpace]);
 
@@ -42,7 +47,7 @@ const MySpace = () => {
         <h1>My Space</h1>
       </HeroBanner>
       <SpaceTitle
-        key={id}
+        id={id}
         bgColor={backgroundColor}
         color={color}
         title={title}
@@ -51,33 +56,41 @@ const MySpace = () => {
 
       <div style={{ width: '400px', margin: '30px auto' }}>
         <button>Edit my space</button>
-        <button>Post a cool story bro</button>
+        <button value={buttonPost} onClick={() => handleClickPost()}>
+          Post a cool story bro
+        </button>
       </div>
 
-      <PostStory token={token} spaceId={mySpace.id} />
-
-      {storiesSorted.map(story => {
-        const { id, name, content, imageUrl } = story;
-        return (
-          <div style={{ position: 'relative' }} key={id}>
-            <StoryTitle
-              id={id}
-              name={name}
-              content={content}
-              imageUrl={imageUrl}
-            />
-            <button
-              // value={story.id}
-              onClick={event =>
-                dispatch(deleteStory(Number(id), mySpace.id, token))
-              }
-              style={{ position: 'absolute', bottom: 0, right: 0 }}
-            >
-              <RiDeleteBin6Line />
-            </button>
-          </div>
-        );
-      })}
+      {buttonPost ? (
+        <PostStory
+          token={token}
+          spaceId={mySpace.id}
+          handleClickPost={handleClickPost}
+        />
+      ) : (
+        storiesSorted.map(story => {
+          const { id, name, content, imageUrl } = story;
+          return (
+            <div style={{ position: 'relative' }} key={id}>
+              <StoryTitle
+                id={id}
+                name={name}
+                content={content}
+                imageUrl={imageUrl}
+              />
+              <button
+                // value={story.id}
+                onClick={event =>
+                  dispatch(deleteStory(Number(id), mySpace.id, token))
+                }
+                style={{ position: 'absolute', bottom: 0, right: 0 }}
+              >
+                <RiDeleteBin6Line />
+              </button>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 };
