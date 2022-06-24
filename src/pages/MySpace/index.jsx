@@ -1,5 +1,5 @@
 import { HeroBanner } from '../../components';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMySpace } from '../../store/space/selectors';
 import { deleteStory } from '../../store/space/thunks';
@@ -10,6 +10,8 @@ const MySpace = () => {
   const dispatch = useDispatch();
   // const user = useSelector(selectUser);
   const mySpace = useSelector(selectMySpace);
+
+  useEffect(() => {}, [dispatch, mySpace]);
 
   // console.log('user inside the mySpace: ', user);
   console.log('mySpace inside the mySpace: ', mySpace);
@@ -67,7 +69,7 @@ const MySpace = () => {
             <button
               value={story.id}
               onClick={event =>
-                dispatch(deleteStory(Number(event.target.value)))
+                dispatch(deleteStory(Number(event.target.value), mySpace.id))
               }
             >
               Delete story
