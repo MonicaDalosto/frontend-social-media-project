@@ -1,3 +1,4 @@
+import { showMessageWithTimeout } from '../appState/actions';
 import axios from 'axios';
 import {
   setAllSpaces,
@@ -23,7 +24,6 @@ export const getAllSpaces = () => async (dispatch, getState) => {
 export const getSpecificSpace = spaceId => async (dispatch, getState) => {
   try {
     const response = await axios.get(`${API_URL}/spaces/details/${spaceId}`);
-    console.log('specificSpace: ', response.data);
 
     // *** Important: If you want to sort the stories inside the thunk, you need pay attention when add new stories, because the stories will be sorted before...
     // const storiesSorted = [...response.data.stories].sort(
@@ -60,18 +60,44 @@ export const deleteStory =
         `${API_URL}/stories/${storyId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log('response from delete thunk: ', deleteRequest);
 
       // After the story being delete, update the MySpace
       const mySpaceResponse = await axios.get(
         `${API_URL}/spaces/details/${spaceId}`
       );
-      console.log(
-        'specificSpace from inside the delete thunk: ',
-        mySpaceResponse.data
-      );
       dispatch(setMySpace(mySpaceResponse.data));
     } catch (error) {
       console.log('error from deleteStories thunk: ', error.message);
+    }
+  };
+
+export const postNewStory =
+  (name, content, imageUrl, spaceId, token) => async (dispatch, getState) => {
+    try {
+      await axios.post(
+        `${API_URL}/stories`,
+        {
+          name,
+          content,
+          imageUrl,
+          spaceId
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // After the story being delete, update the MySpace
+      const mySpaceResponse = await axios.get(
+        `${API_URL}/spaces/details/${spaceId}`
+      );
+      dispatch(setMySpace(mySpaceResponse.data));
+      dispatch(
+        showMessageWithTimeout(
+          'success',
+          false,
+          'Succesfull! Story created!',
+          1500
+        )
+      );
+    } catch (error) {
+      console.log(error.message);
     }
   };

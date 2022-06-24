@@ -54,24 +54,22 @@ const MySpace = () => {
         <button>Post a cool story bro</button>
       </div>
 
-      <PostStory />
+      <PostStory token={token} spaceId={mySpace.id} />
 
       {storiesSorted.map(story => {
         const { id, name, content, imageUrl } = story;
         return (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} key={id}>
             <StoryTitle
-              key={id}
+              id={id}
               name={name}
               content={content}
               imageUrl={imageUrl}
             />
             <button
-              value={story.id}
+              // value={story.id}
               onClick={event =>
-                dispatch(
-                  deleteStory(Number(event.target.value), mySpace.id, token)
-                )
+                dispatch(deleteStory(Number(id), mySpace.id, token))
               }
               style={{ position: 'absolute', bottom: 0, right: 0 }}
             >

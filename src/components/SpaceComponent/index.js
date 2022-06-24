@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { postNewStory } from '../../store/space/thunks';
 
 const SpaceTitle = ({ key, title, description, bgColor, color }) => {
   return (
@@ -17,10 +18,10 @@ const SpaceTitle = ({ key, title, description, bgColor, color }) => {
   );
 };
 
-const StoryTitle = ({ key, name, content, imageUrl }) => {
+const StoryTitle = ({ id, name, content, imageUrl }) => {
   return (
     <div
-      key={key}
+      key={id}
       style={{
         display: 'flex',
         justifyContent: 'space-around',
@@ -47,22 +48,19 @@ const StoryTitle = ({ key, name, content, imageUrl }) => {
   );
 };
 
-const PostStory = () => {
+const PostStory = ({ token, spaceId }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleSubmit = event => {
     event.preventDefault();
-    // dispatch(some thunk) // create a new thunk to post the story
+    dispatch(postNewStory(name, content, imageUrl, spaceId, token));
+    setName('');
+    setContent('');
+    setImageUrl('');
   };
-
-  // const handleClick = () => {
-  //   if (image) {
-  //     return <img src={image} alt="" />;
-  //   }
-  // };
 
   return (
     <div>
@@ -88,8 +86,8 @@ const PostStory = () => {
           Image url
           <input
             type="text"
-            value={image}
-            onChange={event => setImage(event.target.value)}
+            value={imageUrl}
+            onChange={event => setImageUrl(event.target.value)}
           />
         </label>
         {/* <button onClick={handleClick}>preview image</button> */}
