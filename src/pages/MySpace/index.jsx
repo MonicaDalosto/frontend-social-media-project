@@ -5,16 +5,18 @@ import { selectMySpace } from '../../store/space/selectors';
 import { deleteStory } from '../../store/space/thunks';
 // import { NavLink } from 'react-router-dom';
 // import { selectUser } from '../../store/user/selectors';
+import { selectToken } from '../../store/user/selectors';
 
 const MySpace = () => {
   const dispatch = useDispatch();
   // const user = useSelector(selectUser);
   const mySpace = useSelector(selectMySpace);
+  const token = useSelector(selectToken);
 
-  useEffect(() => {}, [dispatch, mySpace]);
+  useEffect(() => {}, [mySpace]);
 
   // console.log('user inside the mySpace: ', user);
-  console.log('mySpace inside the mySpace: ', mySpace);
+  // console.log('mySpace inside the mySpace: ', mySpace);
 
   if (!mySpace)
     return (
@@ -69,7 +71,9 @@ const MySpace = () => {
             <button
               value={story.id}
               onClick={event =>
-                dispatch(deleteStory(Number(event.target.value), mySpace.id))
+                dispatch(
+                  deleteStory(Number(event.target.value), mySpace.id, token)
+                )
               }
             >
               Delete story
