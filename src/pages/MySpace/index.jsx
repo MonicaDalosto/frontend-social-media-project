@@ -1,4 +1,5 @@
 import {
+  EditMySpace,
   HeroBanner,
   PostStory,
   SpaceTitle,
@@ -18,12 +19,16 @@ const MySpace = () => {
   const mySpace = useSelector(selectMySpace);
   const token = useSelector(selectToken);
   const [buttonPost, setButtonPost] = useState(false);
+  const [buttonEdit, setButtonEdit] = useState(false);
+  // const allStories = mySpace.allStories;
 
   const handleClickPost = () => {
     setButtonPost(!buttonPost);
   };
 
-  console.log('buttonPost outside the onclick: ', buttonPost);
+  const handleClickEdit = () => {
+    setButtonEdit(!buttonEdit);
+  };
 
   useEffect(() => {}, [mySpace]);
 
@@ -34,9 +39,14 @@ const MySpace = () => {
       </div>
     );
 
-  const storiesSorted = [...mySpace.stories].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+  // const storiesSorted = () => {
+  //   if (allStories !== null) {
+  //     return [...mySpace.AllStories].sort(
+  //       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  //     );
+  //   }
+  //   return [];
+  // };
 
   // Destructuring the object "mySpace"
   const { id, title, description, backgroundColor, color } = mySpace;
@@ -53,9 +63,10 @@ const MySpace = () => {
         title={title}
         description={description}
       />
-
       <div style={{ width: '400px', margin: '30px auto' }}>
-        <button>Edit my space</button>
+        <button value={buttonEdit} onClick={() => handleClickEdit()}>
+          Edit my space
+        </button>
         <button value={buttonPost} onClick={() => handleClickPost()}>
           Post a cool story bro
         </button>
@@ -68,29 +79,44 @@ const MySpace = () => {
           handleClickPost={handleClickPost}
         />
       ) : (
-        storiesSorted.map(story => {
-          const { id, name, content, imageUrl } = story;
-          return (
-            <div style={{ position: 'relative' }} key={id}>
-              <StoryTitle
-                id={id}
-                name={name}
-                content={content}
-                imageUrl={imageUrl}
-              />
-              <button
-                // value={story.id}
-                onClick={event =>
-                  dispatch(deleteStory(Number(id), mySpace.id, token))
-                }
-                style={{ position: 'absolute', bottom: 0, right: 0 }}
-              >
-                <RiDeleteBin6Line />
-              </button>
-            </div>
-          );
-        })
+        ''
       )}
+
+      {buttonEdit ? (
+        <EditMySpace
+          token={token}
+          mySpace={mySpace}
+          spaceId={mySpace.id}
+          handleClickEdit={handleClickEdit}
+        />
+      ) : (
+        ''
+      )}
+
+      {mySpace.allStories
+        ? mySpace.allStories.map(story => {
+            const { id, name, content, imageUrl } = story;
+            return (
+              <div style={{ position: 'relative' }} key={id}>
+                <StoryTitle
+                  id={id}
+                  name={name}
+                  content={content}
+                  imageUrl={imageUrl}
+                />
+                <button
+                  // value={story.id}
+                  onClick={event =>
+                    dispatch(deleteStory(Number(id), mySpace.id, token))
+                  }
+                  style={{ position: 'absolute', bottom: 0, right: 0 }}
+                >
+                  <RiDeleteBin6Line />
+                </button>
+              </div>
+            );
+          })
+        : "You don't have any stories yet!"}
     </div>
   );
 };

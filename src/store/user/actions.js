@@ -33,7 +33,7 @@ export const signUp = (name, email, password, navigate) => {
       console.log('newSpaceResponse: ', newSpaceResponse);
 
       dispatch(setMySpace(newSpaceResponse.data));
-      navigate(`/myspace/${id}`);
+      // navigate(`/myspace/${id}`);
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);

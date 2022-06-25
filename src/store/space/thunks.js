@@ -101,3 +101,35 @@ export const postNewStory =
       console.log(error.message);
     }
   };
+
+export const updateMySpace =
+  (title, description, backgroundColor, color, spaceId, token) =>
+  async (dispatch, getState) => {
+    try {
+      await axios.put(
+        `${API_URL}/spaces/${spaceId}`,
+        {
+          title,
+          description,
+          backgroundColor,
+          color
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // After the space has been updated, update the MySpace
+      const mySpaceResponse = await axios.get(
+        `${API_URL}/spaces/details/${spaceId}`
+      );
+      dispatch(setMySpace(mySpaceResponse.data));
+      dispatch(
+        showMessageWithTimeout(
+          'success',
+          false,
+          'Succesfull! Your space was updated!',
+          1500
+        )
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };

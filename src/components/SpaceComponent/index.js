@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postNewStory } from '../../store/space/thunks';
+import { postNewStory, updateMySpace } from '../../store/space/thunks';
 
 const SpaceTitle = ({ id, title, description, bgColor, color }) => {
   return (
@@ -72,7 +72,7 @@ const PostStory = ({ token, spaceId, handleClickPost }) => {
         borderRadius: '8px',
         boxShadow: '0 0 5px 5px rgba(0, 0, 0, 0.2)',
         padding: '20px',
-        margin: 'auto'
+        margin: '30px auto'
       }}
     >
       <form
@@ -136,4 +136,94 @@ const PostStory = ({ token, spaceId, handleClickPost }) => {
   );
 };
 
-export { SpaceTitle, StoryTitle, PostStory };
+// {token, spaceId, handleClickEdit}
+const EditMySpace = ({ token, mySpace, handleClickEdit }) => {
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState(mySpace.title);
+  const [description, setDescription] = useState(mySpace.description);
+  const [backgroundColor, setBackgroundColor] = useState(
+    mySpace.backgroundColor
+  );
+  const [color, setColor] = useState(mySpace.color);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    if (title && description) {
+      dispatch(
+        updateMySpace(
+          title,
+          description,
+          backgroundColor,
+          color,
+          mySpace.id,
+          token
+        )
+      );
+      handleClickEdit();
+    }
+  };
+
+  return (
+    <div
+      style={{
+        width: '600px',
+        borderRadius: '8px',
+        boxShadow: '0 0 5px 5px rgba(0, 0, 0, 0.2)',
+        padding: '20px',
+        margin: '30px auto'
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          maxWidth: '300px',
+          margin: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          minHeight: '300px'
+        }}
+      >
+        <h2>Edit your space</h2>
+        <label>
+          Title
+          <input
+            style={{ float: 'right' }}
+            type="text"
+            value={title}
+            onChange={event => setTitle(event.target.value)}
+          />
+        </label>
+        <label>
+          Description
+          <input
+            style={{ float: 'right' }}
+            type="text"
+            value={description}
+            onChange={event => setDescription(event.target.value)}
+          />
+        </label>
+        <label>
+          Background Color
+          <input
+            style={{ float: 'right' }}
+            type="color"
+            value={backgroundColor}
+            onChange={event => setBackgroundColor(event.target.value)}
+          />
+        </label>
+        <label>
+          Text Color
+          <input
+            style={{ float: 'right' }}
+            type="color"
+            value={color}
+            onChange={event => setColor(event.target.value)}
+          />
+        </label>
+        <button type="submit">Save changes!</button>
+      </form>
+    </div>
+  );
+};
+export { SpaceTitle, StoryTitle, PostStory, EditMySpace };
