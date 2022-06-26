@@ -1,18 +1,23 @@
 import { HeroBanner, SpaceTitle, StoryTitle } from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSpecificSpace } from '../../store/space/selectors';
+import {
+  selectSpecificSpaceDetails,
+  selectMyFavorites
+} from '../../store/space/selectors';
 import { useParams } from 'react-router-dom';
 import {
   getSpecificSpace,
-  addNewFavoriteStory
+  addNewFavoriteStory,
+  deleteFavoriteStory
 } from '../../store/space/thunks';
 import { selectToken } from '../../store/user/selectors';
 import { MdOutlineFavoriteBorder } from 'react-icons/md';
 
 const SpaceDetails = () => {
   const dispatch = useDispatch();
-  const specificSpace = useSelector(selectSpecificSpace);
+  const specificSpace = useSelector(selectSpecificSpaceDetails);
+  const myFavorites = useSelector(selectMyFavorites);
   const token = useSelector(selectToken);
   const params = useParams();
   const SpaceId = params.id;
@@ -31,6 +36,11 @@ const SpaceDetails = () => {
   const storiesSorted = [...specificSpace.stories].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
+
+  // const isFavorite =
+  //   myFavorites && myFavorites.find(favorite => favorite.storyId === id)
+  //     ? true
+  //     : false;
 
   // Destructuring the object "specificSpace"
   const { id, title, description, backgroundColor, color } = specificSpace;
@@ -60,11 +70,17 @@ const SpaceDetails = () => {
             />
             {!token ? (
               ''
+            ) : myFavorites &&
+              myFavorites.find(favorite => favorite.storyId === id) ? (
+              <button
+                onClick={event => dispatch(deleteFavoriteStory(id))}
+                style={{ position: 'absolute', bottom: 20, right: 20 }}
+              >
+                Remove Favorite
+              </button>
             ) : (
               <button
-                onClick={
-                  event => dispatch(addNewFavoriteStory(id)) //The arguments order should be the same in the dispatch and in the thunk: userId, storyId, token
-                }
+                onClick={event => dispatch(addNewFavoriteStory(id))}
                 style={{ position: 'absolute', bottom: 20, right: 20 }}
               >
                 <MdOutlineFavoriteBorder />

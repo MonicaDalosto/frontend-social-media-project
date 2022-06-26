@@ -122,7 +122,7 @@ export const getUserWithStoredToken = () => {
       // token is still valid
       dispatch(tokenStillValid({ user: response.data }));
       dispatch(setMySpace(response.data.mySpace));
-      dispatch(setMyFavorites(response.data.user.myFavorites));
+      dispatch(setMyFavorites(response.data.myFavorites));
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {

@@ -248,4 +248,5 @@ const MyFavorites = ({ id, name, content, imageUrl }) => {
     </div>
   );
 };
+
 export { SpaceTitle, StoryTitle, PostStory, EditMySpace, MyFavorites };

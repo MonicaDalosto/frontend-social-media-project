@@ -151,7 +151,40 @@ export const addNewFavoriteStory = storyId => async (dispatch, getState) => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    console.log('response.data from thunk: ', response.data); // é um objeto
+    // console.log('response.data from thunk: ', response.data); // é um objeto
+
+    const allMyFavoritesResponse = await axios.get(
+      `${API_URL}/favorites/myfavorites/${userId}`
+    );
+
+    // console.log('All my favorites: ', allMyFavoritesResponse.data);
+    dispatch(setMyFavorites(allMyFavoritesResponse.data));
+    dispatch(
+      showMessageWithTimeout(
+        'success',
+        false,
+        "Succesfull! Story saved in your favorite's list!",
+        1500
+      )
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const deleteFavoriteStory = storyId => async (dispatch, getState) => {
+  try {
+    const userId = getState().user.profile.id;
+    const token = getState().user.token;
+    //  Send the request to the Api to delete the specific Favorite Story (é possivel receber o retorno assim: "const deleteRequestResponse = await...", mas como não vou usar a response pra nada, não precisa)
+    console.log('token: ', token);
+    await axios.delete(`${API_URL}/favorites`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        userId,
+        storyId
+      }
+    });
 
     const allMyFavoritesResponse = await axios.get(
       `${API_URL}/favorites/myfavorites/${userId}`
@@ -167,7 +200,9 @@ export const addNewFavoriteStory = storyId => async (dispatch, getState) => {
         1500
       )
     );
+
+    // After the favorite story has been deleted, update MyFavorites
   } catch (error) {
-    console.log(error.message);
+    console.log('error from deleteFavoriteStory thunk: ', error.message);
   }
 };

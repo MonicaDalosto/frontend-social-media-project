@@ -9,7 +9,7 @@ import {
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMySpace, selectMyFavorites } from '../../store/space/selectors';
-import { deleteStory } from '../../store/space/thunks';
+import { deleteStory, deleteFavoriteStory } from '../../store/space/thunks';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useState } from 'react';
 
@@ -102,29 +102,29 @@ const MySpace = () => {
       ) : (
         <div>
           <h2 style={{ textAlign: 'center' }}>My Favorite's Stories</h2>
-          {favoritesSorted
-            ? favoritesSorted.map(favorite => {
-                const { storyId, story } = favorite;
-                return (
-                  <div style={{ position: 'relative' }} key={storyId}>
-                    <MyFavorites
-                      id={storyId}
-                      name={story.name}
-                      content={story.content}
-                      imageUrl={story.imageUrl}
-                    />
-                    <button
-                      // onClick={event =>
-                      //   dispatch(deleteMyFavorite(storyId))
-                      // }
-                      style={{ position: 'absolute', bottom: 20, right: 20 }}
-                    >
-                      <RiDeleteBin6Line />
-                    </button>
-                  </div>
-                );
-              })
-            : "You don't have any favorites yet!"}
+          {favoritesSorted ? (
+            favoritesSorted.map(favorite => {
+              const { storyId, story } = favorite;
+              return (
+                <div style={{ position: 'relative' }} key={storyId}>
+                  <MyFavorites
+                    id={storyId}
+                    name={story.name}
+                    content={story.content}
+                    imageUrl={story.imageUrl}
+                  />
+                  <button
+                    onClick={event => dispatch(deleteFavoriteStory(storyId))}
+                    style={{ position: 'absolute', bottom: 20, right: 20 }}
+                  >
+                    <RiDeleteBin6Line />
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <p>You don't have any Stories yet</p>
+          )}
         </div>
       )}
 
