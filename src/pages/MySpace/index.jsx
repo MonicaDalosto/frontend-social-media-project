@@ -39,14 +39,11 @@ const MySpace = () => {
       </div>
     );
 
-  // const storiesSorted = () => {
-  //   if (allStories !== null) {
-  //     return [...mySpace.AllStories].sort(
-  //       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  //     );
-  //   }
-  //   return [];
-  // };
+  const storiesSorted = !mySpace.stories
+    ? null
+    : [...mySpace.stories].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
   // Destructuring the object "mySpace"
   const { id, title, description, backgroundColor, color } = mySpace;
@@ -93,8 +90,8 @@ const MySpace = () => {
         ''
       )}
 
-      {mySpace.allStories
-        ? mySpace.allStories.map(story => {
+      {storiesSorted
+        ? storiesSorted.map(story => {
             const { id, name, content, imageUrl } = story;
             return (
               <div style={{ position: 'relative' }} key={id}>
@@ -105,11 +102,10 @@ const MySpace = () => {
                   imageUrl={imageUrl}
                 />
                 <button
-                  // value={story.id}
                   onClick={event =>
                     dispatch(deleteStory(Number(id), mySpace.id, token))
                   }
-                  style={{ position: 'absolute', bottom: 0, right: 0 }}
+                  style={{ position: 'absolute', bottom: 20, right: 20 }}
                 >
                   <RiDeleteBin6Line />
                 </button>

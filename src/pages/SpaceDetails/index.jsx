@@ -3,17 +3,23 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSpecificSpace } from '../../store/space/selectors';
 import { useParams } from 'react-router-dom';
-import { getSpecificSpace } from '../../store/space/thunks';
-// import { NavLink } from 'react-router-dom';
+import {
+  getSpecificSpace,
+  addNewFavoriteStory
+} from '../../store/space/thunks';
+import { selectToken, selectUser } from '../../store/user/selectors';
+import { MdOutlineFavoriteBorder } from 'react-icons/md';
 
 const SpaceDetails = () => {
   const dispatch = useDispatch();
   const specificSpace = useSelector(selectSpecificSpace);
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
   const params = useParams();
   const SpaceId = params.id;
+  const userId = !user ? 0 : user.id;
 
   useEffect(() => {
-    console.log('Hello from useEffect stories');
     dispatch(getSpecificSpace(SpaceId));
   }, [dispatch, SpaceId]);
 
@@ -47,12 +53,26 @@ const SpaceDetails = () => {
       {storiesSorted.map(story => {
         const { id, name, content, imageUrl } = story;
         return (
-          <StoryTitle
-            key={id}
-            name={name}
-            content={content}
-            imageUrl={imageUrl}
-          />
+          <div style={{ position: 'relative' }}>
+            <StoryTitle
+              id={id}
+              name={name}
+              content={content}
+              imageUrl={imageUrl}
+            />
+            {!token ? (
+              ''
+            ) : (
+              <button
+                onClick={
+                  event => dispatch(addNewFavoriteStory(userId, id, token)) //The arguments order should be the same in the dispatch and in the thunk: userId, storyId, token
+                }
+                style={{ position: 'absolute', bottom: 20, right: 20 }}
+              >
+                <MdOutlineFavoriteBorder />
+              </button>
+            )}
+          </div>
         );
       })}
     </div>

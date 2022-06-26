@@ -55,11 +55,10 @@ export const getAllStories = () => async (dispatch, getState) => {
 export const deleteStory =
   (storyId, spaceId, token) => async (dispatch, getState) => {
     try {
-      //  Send the request to the Api to delete the specific Story
-      const deleteRequest = await axios.delete(
-        `${API_URL}/stories/${storyId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      //  Send the request to the Api to delete the specific Story (ë possivel receber o retorno assim: "const deleteRequestResponse = await...", mas como não vou usar a response pra nada, não precisa)
+      await axios.delete(`${API_URL}/stories/${storyId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       // After the story being delete, update the MySpace
       const mySpaceResponse = await axios.get(
@@ -102,6 +101,7 @@ export const postNewStory =
     }
   };
 
+// Dispatch from the MySpace, Edit mySpace
 export const updateMySpace =
   (title, description, backgroundColor, color, spaceId, token) =>
   async (dispatch, getState) => {
@@ -129,6 +129,36 @@ export const updateMySpace =
           1500
         )
       );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+// Dispatch from SpaceDetails and mySpace (to add the story as favorite)
+export const addNewFavoriteStory =
+  (userId, storyId, token) => async (dispatch, getState) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/favorites`,
+        {
+          userId,
+          storyId
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log('response.data from thunk: ', response.data); // é um objeto
+
+      // const allFavoritesResponse = await axios.get(`${API_URL}/favorites`);
+      // dispatch(setMySpace(mySpaceResponse.data));
+      // dispatch(
+      //   showMessageWithTimeout(
+      //     'success',
+      //     false,
+      //     'Succesfull! Favorite added!',
+      //     1500
+      //   )
+      // );
     } catch (error) {
       console.log(error.message);
     }

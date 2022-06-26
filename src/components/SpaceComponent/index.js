@@ -5,7 +5,7 @@ import { postNewStory, updateMySpace } from '../../store/space/thunks';
 const SpaceTitle = ({ id, title, description, bgColor, color }) => {
   return (
     <div
-      id={id}
+      key={id}
       style={{
         backgroundColor: bgColor,
         color: color,
