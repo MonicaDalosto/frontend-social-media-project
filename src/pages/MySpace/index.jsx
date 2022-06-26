@@ -7,17 +7,17 @@ import {
 } from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMySpace } from '../../store/space/selectors';
+import { selectMySpace, selectMyFavorites } from '../../store/space/selectors';
 import { deleteStory } from '../../store/space/thunks';
-import { selectToken } from '../../store/user/selectors';
+// import { selectToken } from '../../store/user/selectors';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useState } from 'react';
 
 const MySpace = () => {
-  // const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const mySpace = useSelector(selectMySpace);
-  const token = useSelector(selectToken);
+  const myFavorites = useSelector(selectMyFavorites);
+  // const token = useSelector(selectToken);
   const [buttonPost, setButtonPost] = useState(false);
   const [buttonEdit, setButtonEdit] = useState(false);
   // const allStories = mySpace.allStories;
@@ -70,18 +70,13 @@ const MySpace = () => {
       </div>
 
       {buttonPost ? (
-        <PostStory
-          token={token}
-          spaceId={mySpace.id}
-          handleClickPost={handleClickPost}
-        />
+        <PostStory spaceId={mySpace.id} handleClickPost={handleClickPost} />
       ) : (
         ''
       )}
 
       {buttonEdit ? (
         <EditMySpace
-          token={token}
           mySpace={mySpace}
           spaceId={mySpace.id}
           handleClickEdit={handleClickEdit}
@@ -103,7 +98,7 @@ const MySpace = () => {
                 />
                 <button
                   onClick={event =>
-                    dispatch(deleteStory(Number(id), mySpace.id, token))
+                    dispatch(deleteStory(Number(id), mySpace.id))
                   }
                   style={{ position: 'absolute', bottom: 20, right: 20 }}
                 >

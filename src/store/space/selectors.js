@@ -4,4 +4,6 @@ export const selectSpecificSpace = reduxState => reduxState.space.spaceDetails;
 
 export const selectMySpace = reduxState => reduxState.space.mySpace;
 
+export const selectMyFavorites = reduxState => reduxState.space.myFavorites;
+
 export const selectAllStories = reduxState => reduxState.space.allStories;

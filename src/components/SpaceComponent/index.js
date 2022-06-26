@@ -48,7 +48,7 @@ const StoryTitle = ({ id, name, content, imageUrl }) => {
   );
 };
 
-const PostStory = ({ token, spaceId, handleClickPost }) => {
+const PostStory = ({ spaceId, handleClickPost }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
@@ -57,7 +57,7 @@ const PostStory = ({ token, spaceId, handleClickPost }) => {
   const handleSubmit = event => {
     event.preventDefault();
     if (name && content) {
-      dispatch(postNewStory(name, content, imageUrl, spaceId, token));
+      dispatch(postNewStory(name, content, imageUrl, spaceId));
       setName('');
       setContent('');
       setImageUrl('');
@@ -136,8 +136,7 @@ const PostStory = ({ token, spaceId, handleClickPost }) => {
   );
 };
 
-// {token, spaceId, handleClickEdit}
-const EditMySpace = ({ token, mySpace, handleClickEdit }) => {
+const EditMySpace = ({ mySpace, handleClickEdit }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState(mySpace.title);
   const [description, setDescription] = useState(mySpace.description);
@@ -150,14 +149,7 @@ const EditMySpace = ({ token, mySpace, handleClickEdit }) => {
     event.preventDefault();
     if (title && description) {
       dispatch(
-        updateMySpace(
-          title,
-          description,
-          backgroundColor,
-          color,
-          mySpace.id,
-          token
-        )
+        updateMySpace(title, description, backgroundColor, color, mySpace.id)
       );
       handleClickEdit();
     }

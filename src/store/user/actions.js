@@ -30,7 +30,7 @@ export const signUp = (name, email, password, navigate) => {
         id
       });
 
-      console.log('newSpaceResponse: ', newSpaceResponse);
+      // console.log('newSpaceResponse: ', newSpaceResponse);
 
       dispatch(setMySpace(newSpaceResponse.data));
       // navigate(`/myspace/${id}`);

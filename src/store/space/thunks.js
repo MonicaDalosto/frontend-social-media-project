@@ -4,6 +4,7 @@ import {
   setAllSpaces,
   setSpaceDetails,
   setMySpace,
+  setMyFavorites,
   setAllStories
 } from './slice';
 
@@ -52,27 +53,28 @@ export const getAllStories = () => async (dispatch, getState) => {
 };
 
 // The function to get all stories from the Api:
-export const deleteStory =
-  (storyId, spaceId, token) => async (dispatch, getState) => {
-    try {
-      //  Send the request to the Api to delete the specific Story (ë possivel receber o retorno assim: "const deleteRequestResponse = await...", mas como não vou usar a response pra nada, não precisa)
-      await axios.delete(`${API_URL}/stories/${storyId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+export const deleteStory = (storyId, spaceId) => async (dispatch, getState) => {
+  try {
+    const token = getState().user.token;
+    //  Send the request to the Api to delete the specific Story (ë possivel receber o retorno assim: "const deleteRequestResponse = await...", mas como não vou usar a response pra nada, não precisa)
+    await axios.delete(`${API_URL}/stories/${storyId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      // After the story being delete, update the MySpace
-      const mySpaceResponse = await axios.get(
-        `${API_URL}/spaces/details/${spaceId}`
-      );
-      dispatch(setMySpace(mySpaceResponse.data));
-    } catch (error) {
-      console.log('error from deleteStories thunk: ', error.message);
-    }
-  };
+    // After the story being delete, update the MySpace
+    const mySpaceResponse = await axios.get(
+      `${API_URL}/spaces/details/${spaceId}`
+    );
+    dispatch(setMySpace(mySpaceResponse.data));
+  } catch (error) {
+    console.log('error from deleteStories thunk: ', error.message);
+  }
+};
 
 export const postNewStory =
-  (name, content, imageUrl, spaceId, token) => async (dispatch, getState) => {
+  (name, content, imageUrl, spaceId) => async (dispatch, getState) => {
     try {
+      const token = getState().user.token;
       await axios.post(
         `${API_URL}/stories`,
         {
@@ -103,9 +105,10 @@ export const postNewStory =
 
 // Dispatch from the MySpace, Edit mySpace
 export const updateMySpace =
-  (title, description, backgroundColor, color, spaceId, token) =>
+  (title, description, backgroundColor, color, spaceId) =>
   async (dispatch, getState) => {
     try {
+      const token = getState().user.token;
       await axios.put(
         `${API_URL}/spaces/${spaceId}`,
         {
@@ -135,31 +138,36 @@ export const updateMySpace =
   };
 
 // Dispatch from SpaceDetails and mySpace (to add the story as favorite)
-export const addNewFavoriteStory =
-  (userId, storyId, token) => async (dispatch, getState) => {
-    try {
-      const response = await axios.post(
-        `${API_URL}/favorites`,
-        {
-          userId,
-          storyId
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+export const addNewFavoriteStory = storyId => async (dispatch, getState) => {
+  try {
+    const userId = getState().user.profile.id;
+    const token = getState().user.token;
+    const response = await axios.post(
+      `${API_URL}/favorites`,
+      {
+        userId,
+        storyId
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-      console.log('response.data from thunk: ', response.data); // é um objeto
+    console.log('response.data from thunk: ', response.data); // é um objeto
 
-      // const allFavoritesResponse = await axios.get(`${API_URL}/favorites`);
-      // dispatch(setMySpace(mySpaceResponse.data));
-      // dispatch(
-      //   showMessageWithTimeout(
-      //     'success',
-      //     false,
-      //     'Succesfull! Favorite added!',
-      //     1500
-      //   )
-      // );
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+    const allMyFavoritesResponse = await axios.get(
+      `${API_URL}/favorites/myfavorites/${userId}`
+    );
+
+    console.log('All my favorites: ', allMyFavoritesResponse.data);
+    dispatch(setMyFavorites(allMyFavoritesResponse.data));
+    dispatch(
+      showMessageWithTimeout(
+        'success',
+        false,
+        "Succesfull! Story saved in your favorite's list!",
+        1500
+      )
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+};

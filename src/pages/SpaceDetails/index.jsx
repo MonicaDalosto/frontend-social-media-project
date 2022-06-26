@@ -7,17 +7,15 @@ import {
   getSpecificSpace,
   addNewFavoriteStory
 } from '../../store/space/thunks';
-import { selectToken, selectUser } from '../../store/user/selectors';
+import { selectToken } from '../../store/user/selectors';
 import { MdOutlineFavoriteBorder } from 'react-icons/md';
 
 const SpaceDetails = () => {
   const dispatch = useDispatch();
   const specificSpace = useSelector(selectSpecificSpace);
-  const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const params = useParams();
   const SpaceId = params.id;
-  const userId = !user ? 0 : user.id;
 
   useEffect(() => {
     dispatch(getSpecificSpace(SpaceId));
@@ -53,7 +51,7 @@ const SpaceDetails = () => {
       {storiesSorted.map(story => {
         const { id, name, content, imageUrl } = story;
         return (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} key={id}>
             <StoryTitle
               id={id}
               name={name}
@@ -65,7 +63,7 @@ const SpaceDetails = () => {
             ) : (
               <button
                 onClick={
-                  event => dispatch(addNewFavoriteStory(userId, id, token)) //The arguments order should be the same in the dispatch and in the thunk: userId, storyId, token
+                  event => dispatch(addNewFavoriteStory(id)) //The arguments order should be the same in the dispatch and in the thunk: userId, storyId, token
                 }
                 style={{ position: 'absolute', bottom: 20, right: 20 }}
               >
