@@ -5,7 +5,7 @@ import {
   selectSpecificSpaceDetails,
   selectMyFavorites
 } from '../../store/space/selectors';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import {
   getSpecificSpace,
   addNewFavoriteStory,
@@ -37,11 +37,6 @@ const SpaceDetails = () => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
-  // const isFavorite =
-  //   myFavorites && myFavorites.find(favorite => favorite.storyId === id)
-  //     ? true
-  //     : false;
-
   // Destructuring the object "specificSpace"
   const { id, title, description, backgroundColor, color } = specificSpace;
 
@@ -72,19 +67,23 @@ const SpaceDetails = () => {
               ''
             ) : myFavorites &&
               myFavorites.find(favorite => favorite.storyId === id) ? (
-              <button
-                onClick={event => dispatch(deleteFavoriteStory(id))}
-                style={{ position: 'absolute', bottom: 20, right: 20 }}
-              >
-                Remove Favorite
-              </button>
+              <div style={{ position: 'absolute', bottom: 20, right: 20 }}>
+                <NavLink to={`/stories/${id}`}>
+                  <button>Details</button>
+                </NavLink>
+                <button onClick={event => dispatch(deleteFavoriteStory(id))}>
+                  Remove Favorite
+                </button>
+              </div>
             ) : (
-              <button
-                onClick={event => dispatch(addNewFavoriteStory(id))}
-                style={{ position: 'absolute', bottom: 20, right: 20 }}
-              >
-                <MdOutlineFavoriteBorder />
-              </button>
+              <div style={{ position: 'absolute', bottom: 20, right: 20 }}>
+                <NavLink to={`/stories/${id}`}>
+                  <button>Details</button>
+                </NavLink>
+                <button onClick={event => dispatch(addNewFavoriteStory(id))}>
+                  <MdOutlineFavoriteBorder />
+                </button>
+              </div>
             )}
           </div>
         );

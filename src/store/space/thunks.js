@@ -5,6 +5,7 @@ import {
   setSpaceDetails,
   setMySpace,
   setMyFavorites,
+  setStoryDetails,
   setAllStories
 } from './slice';
 
@@ -38,6 +39,16 @@ export const getSpecificSpace = spaceId => async (dispatch, getState) => {
     dispatch(setSpaceDetails(response.data));
   } catch (error) {
     console.log('error from getSpecificSpace thunk: ', error.message);
+  }
+};
+
+export const getSpecificStory = storyId => async (dispatch, getState) => {
+  try {
+    const response = await axios.get(`${API_URL}/stories/${storyId}`);
+
+    dispatch(setStoryDetails(response.data));
+  } catch (error) {
+    console.log('error from getSpecificStory thunk: ', error.message);
   }
 };
 
@@ -142,7 +153,7 @@ export const addNewFavoriteStory = storyId => async (dispatch, getState) => {
   try {
     const userId = getState().user.profile.id;
     const token = getState().user.token;
-    const response = await axios.post(
+    await axios.post(
       `${API_URL}/favorites`,
       {
         userId,

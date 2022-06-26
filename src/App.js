@@ -3,13 +3,14 @@ import './App.css';
 
 import { Routes, Route } from 'react-router-dom';
 import { HeroBanner, Loading, MessageBox, Navigation } from './components';
-import { SignUp, Login, Spaces, SpaceDetails, MySpace } from './pages';
-// import Navigation from './components/Navigation';
-// import Loading from './components/Loading';
-// import HeroBanner from './components/HeroBanner';
-// import MessageBox from './components/MessageBox';
-// import SignUp from './pages/SignUp';
-// import Login from './pages/Login';
+import {
+  SignUp,
+  Login,
+  Spaces,
+  SpaceDetails,
+  MySpace,
+  StoryDetails
+} from './pages';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAppLoading } from './store/appState/selectors';
@@ -47,6 +48,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/spaces/:id" element={<SpaceDetails />} />
+        <Route path="/stories/:id" element={<StoryDetails />} />
       </Routes>
     </div>
   );

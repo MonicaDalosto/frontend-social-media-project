@@ -5,6 +5,7 @@ const initialState = {
   spaceDetails: null,
   mySpace: null,
   myFavorites: null,
+  storyDetails: null,
   allStories: null
 };
 
@@ -24,6 +25,9 @@ export const spaceSlice = createSlice({
     setMyFavorites: (state, action) => {
       state.myFavorites = action.payload;
     },
+    setStoryDetails: (state, action) => {
+      state.storyDetails = action.payload;
+    },
     setAllStories: (state, action) => {
       state.allStories = action.payload;
     }
@@ -35,6 +39,7 @@ export const {
   setSpaceDetails,
   setMySpace,
   setMyFavorites,
+  setStoryDetails,
   setAllStories
 } = spaceSlice.actions;
 

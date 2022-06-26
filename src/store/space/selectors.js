@@ -7,4 +7,6 @@ export const selectMySpace = reduxState => reduxState.space.mySpace;
 
 export const selectMyFavorites = reduxState => reduxState.space.myFavorites;
 
+export const selectStoryDetails = reduxState => reduxState.space.storyDetails;
+
 export const selectAllStories = reduxState => reduxState.space.allStories;
