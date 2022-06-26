@@ -217,3 +217,31 @@ export const deleteFavoriteStory = storyId => async (dispatch, getState) => {
     console.log('error from deleteFavoriteStory thunk: ', error.message);
   }
 };
+
+export const postNewBid = (value, storyId) => async (dispatch, getState) => {
+  try {
+    const userId = getState().user.profile.id;
+    const token = getState().user.token;
+    await axios.post(
+      `${API_URL}/bids`,
+      {
+        value,
+        storyId,
+        userId
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    // After the story being delete, update the MySpace
+    dispatch(getSpecificStory(storyId));
+    dispatch(
+      showMessageWithTimeout(
+        'success',
+        false,
+        'Succesfull! Story created!',
+        1500
+      )
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+};

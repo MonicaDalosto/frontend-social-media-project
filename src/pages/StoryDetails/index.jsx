@@ -2,7 +2,7 @@ import { HeroBanner, StoryTitle } from '../../components';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getSpecificStory } from '../../store/space/thunks';
+import { getSpecificStory, postNewBid } from '../../store/space/thunks';
 import { selectStoryDetails } from '../../store/space/selectors';
 import { useState } from 'react';
 
@@ -11,14 +11,20 @@ const StoryDetails = () => {
   const storyId = params.id;
   const dispatch = useDispatch();
   const storyDetails = useSelector(selectStoryDetails);
-  const [bid, setBid] = useState(null);
+  const [value, setValue] = useState('');
 
   // console.log('storyDetails: ', storyDetails);
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('bid from page: ', bid);
+    console.log('bid from page: ', value); // pass the bid, and the storyId
+    dispatch(postNewBid(value, storyId));
+    setValue('');
   };
+
+  const bidsSorted = storyDetails.bids
+    ? [...storyDetails.bids].sort((a, b) => Number(b.value) - Number(a.value))
+    : null;
 
   useEffect(() => {
     dispatch(getSpecificStory(storyId));
@@ -66,15 +72,20 @@ const StoryDetails = () => {
               <input
                 style={{ float: 'right' }}
                 type="text"
-                value={bid}
-                onChange={event => setBid(Number(event.target.value))}
+                value={value}
+                onChange={event => setValue(Number(event.target.value))}
               />
             </label>
-            <p>It should be higher than Eur 00,00</p>
+            <p>It should be higher than the previous bids</p>
             <button type="submit">Bid!</button>
           </form>
           <div>
             <h3>Previous Bids...</h3>
+            {bidsSorted
+              ? bidsSorted.map(bid => {
+                  return <p>EUR: {bid.value}</p>;
+                })
+              : ''}
           </div>
         </div>
       </div>
