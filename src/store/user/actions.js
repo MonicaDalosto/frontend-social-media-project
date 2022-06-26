@@ -4,7 +4,7 @@ import { selectToken } from './selectors';
 import { appLoading, appDoneLoading, setMessage } from '../appState/slice';
 import { showMessageWithTimeout } from '../appState/actions';
 import { loginSuccess, logOut, tokenStillValid } from './slice';
-import { setMySpace } from '../space/slice';
+import { setMyFavorites, setMySpace } from '../space/slice';
 
 export const signUp = (name, email, password, navigate) => {
   return async (dispatch, getState) => {
@@ -74,6 +74,7 @@ export const login = (email, password) => {
       //  When the user login, send the mySpace value to the reducer slice to set on the state:
       // console.log('response.data.user login: ', response.data.user);
       dispatch(setMySpace(response.data.user.mySpace));
+      dispatch(setMyFavorites(response.data.user.myFavorites));
       dispatch(showMessageWithTimeout('success', false, 'welcome back!', 1500));
       dispatch(appDoneLoading());
     } catch (error) {
@@ -121,6 +122,7 @@ export const getUserWithStoredToken = () => {
       // token is still valid
       dispatch(tokenStillValid({ user: response.data }));
       dispatch(setMySpace(response.data.mySpace));
+      dispatch(setMyFavorites(response.data.user.myFavorites));
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {

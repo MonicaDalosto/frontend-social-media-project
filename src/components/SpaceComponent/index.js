@@ -98,7 +98,7 @@ const PostStory = ({ spaceId, handleClickPost }) => {
         </label>
         <label>
           Content
-          <input
+          <textarea
             style={{ float: 'right' }}
             type="text"
             value={content}
@@ -218,4 +218,34 @@ const EditMySpace = ({ mySpace, handleClickEdit }) => {
     </div>
   );
 };
-export { SpaceTitle, StoryTitle, PostStory, EditMySpace };
+
+const MyFavorites = ({ id, name, content, imageUrl }) => {
+  return (
+    <div
+      key={id}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        maxWidth: '1000px',
+        margin: '30px auto',
+        padding: '20px'
+      }}
+    >
+      <img
+        src={imageUrl}
+        alt=""
+        style={{
+          maxWidth: '500px',
+          maxHeight: '400px',
+          marginRight: '30px'
+        }}
+      />
+      <div>
+        <h3>{name}</h3>
+        <p>{content}</p>
+      </div>
+    </div>
+  );
+};
+export { SpaceTitle, StoryTitle, PostStory, EditMySpace, MyFavorites };
